@@ -14,7 +14,7 @@ export class LoggerService {
    */
   log(error: any): void {
     console.log('-------------------------');
-    console.log(error.message);
+    console.log(error);
     console.log('-------------------------');
     const logger = new Logger();
     logger.message = error.message;

@@ -1,9 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import IVisualInfo from './visualInfo.interface';
+export default class Info {
+  text: string;
+  position: string;
+  timeStamp: Date;
+}
 @Entity('visualInfo')
 export class VisualInfo {
+  constructor() {
+    this.info = new Info();
+  }
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'jsonb' })
-  info: IVisualInfo;
+  info: Info;
 }

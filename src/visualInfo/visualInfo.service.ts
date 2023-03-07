@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as moment from 'moment';
 import { Repository } from 'typeorm';
 import { InfoDTO } from './model/visualInfo.dto';
 import { VisualInfo } from './model/visualInfo.entity';
+import { IVisualInfoOutput } from './model/visualInfo.interface';
 
 @Injectable()
 export class VisualInfoService {
@@ -17,52 +19,44 @@ export class VisualInfoService {
    * @return {*}  {(Promise<VisualInfo | null>)}
    * @memberof VisualInfoService
    */
-  async getCurrent(): Promise<VisualInfo | null> {
+  async getCurrent(): Promise<IVisualInfoOutput | null> {
     const info = await this.visualInfoRepository.find({
       order: {
         id: 'desc',
       },
       take: 1,
     });
-    return info ? info[0] : null;
+    return info ? this.format(info[0]) : null;
   }
 
   /**
    * Get All history of text elements
    *
-   * @return {*}  {Promise<VisualInfo[]>}
+   * @return {*}  {Promise<IVisualInfoOutput[]>}
    * @memberof VisualInfoService
    */
-  async getAll(): Promise<VisualInfo[]> {
-    return this.visualInfoRepository.find();
+  async getAll(): Promise<IVisualInfoOutput[]> {
+    const result = await this.visualInfoRepository.find();
+    return result.map((item) => this.format(item));
   }
 
   /**
-   * Get the previous informtaion about the text element
+   * format the text element information
    *
-   * @param {number} currentId
-   * @return {*}  {(Promise<VisualInfo | null>)}
+   * @param {VisualInfo} info
+   * @return {*}  {IVisualInfoOutput}
    * @memberof VisualInfoService
    */
-  async undo(currentId: number): Promise<VisualInfo | null> {
-    const info = await this.visualInfoRepository.findOneBy({
-      id: currentId - 1,
-    });
-    return info;
-  }
-
-  /**
-   * Get the next position of the text element
-   *
-   * @param {number} currentId
-   * @return {*}  {(Promise<VisualInfo | null>)}
-   * @memberof VisualInfoService
-   */
-  async redo(currentId: number): Promise<VisualInfo | null> {
-    const info = await this.visualInfoRepository.findOneBy({
-      id: currentId + 1,
-    });
-    return info;
+  format(info: VisualInfo): IVisualInfoOutput {
+    if (!info) return null;
+    return {
+      text: info.info.text,
+      timeStamp: moment(info.info.timeStamp).format('YYYY-MM-DD HH:mm'),
+      position: {
+        x: info.info.position.split(',')[0],
+        y: info.info.position.split(',')[1],
+      },
+    };
   }
 
   /**
@@ -75,9 +69,37 @@ export class VisualInfoService {
    */
   async saveInfo(info: InfoDTO): Promise<void> {
     const visualInfo = new VisualInfo();
-    visualInfo.info.timeStamp = new Date();
     visualInfo.info.text = info.text;
+    visualInfo.info.timeStamp = new Date();
     visualInfo.info.position = `${info.position.x},${info.position.y}`;
     await this.visualInfoRepository.save(visualInfo);
+  }
+
+  /**
+   * Get the previous informtaion about the text element
+   *
+   * @param {number} currentId
+   * @return {*}  {(Promise<IVisualInfoOutput | null>)}
+   * @memberof VisualInfoService
+   */
+  async undo(currentId: number): Promise<IVisualInfoOutput | null> {
+    const info = await this.visualInfoRepository.findOneBy({
+      id: currentId - 1,
+    });
+    return this.format(info);
+  }
+
+  /**
+   * Get the next position of the text element
+   *
+   * @param {number} currentId
+   * @return {*}  {(Promise<IVisualInfoOutput | null>)}
+   * @memberof VisualInfoService
+   */
+  async redo(currentId: number): Promise<IVisualInfoOutput | null> {
+    const info = await this.visualInfoRepository.findOneBy({
+      id: currentId + 1,
+    });
+    return this.format(info);
   }
 }

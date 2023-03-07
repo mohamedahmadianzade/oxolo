@@ -1,5 +1,14 @@
-export default interface IVisualInfo {
+/**
+ *
+ * @export
+ * @interface IVisualInfoOutput
+ */
+export interface IVisualInfoOutput {
   text: string;
-  position: string;
-  timeStamp: Date;
+  position: IPosition;
+  timeStamp: string;
+}
+interface IPosition {
+  x: string;
+  y: string;
 }
