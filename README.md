@@ -18,19 +18,59 @@ All configuration variables are stored in .env files ( like Database connection 
 ## Database Architecture
 
 Database name:oxoloDB
+
 We store and keep all the information about Text Element in the visualInfo table.
 The reason for keeping information is to support Unde/Redo operation for future versions.
 
-visualInfo table structure :
+###visualInfo table structure :
 
 ```
-Id: integer auto_increment
-info :{
-timestamp: timestamp, // The time of text changed
-position:string // '1,2' format
-text:string // Content of the text
-}
+public."visualInfo"
+(
+    id integer NOT NULL DEFAULT 'nextval('"visualInfo_id_seq"'::regclass)',
+    info jsonb NOT NULL,
+    CONSTRAINT "PK_f565446e00c25d60addaf8ecb6d" PRIMARY KEY (id)
+)
+
+info :
+  {
+    timestamp: timestamp, // The time of text changed
+    position:string // '1,2' format
+    text:string // Content of the text
+  }
 ```
+
+###logger table structure :
+All error happeing in project is saved in logger table and can be accessed via logger method
+
+```
+public.logger
+(
+    id integer NOT NULL DEFAULT 'nextval('logger_id_seq'::regclass)',
+    date timestamp without time zone NOT NULL,
+    message character varying COLLATE pg_catalog."default" NOT NULL,
+    error character varying COLLATE pg_catalog."default" NOT NULL,
+)
+
+```
+
+## Service
+
+All service methods available by call below methods:
+
+### Logger
+
+http://host/logger GET
+
+### VisualInfo
+
+http://host/info GET get the current position of text element
+
+http://host/info POST save the latest position of text element
+
+http://host/info/all GET Full history of text element
+
+Note : we keep all history of text element to provide features like redo and undo in future versions
 
 ## Installation
 
