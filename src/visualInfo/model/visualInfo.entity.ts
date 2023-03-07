@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import IVisualInfo from './visualInfo.interface';
-@Entity()
+@Entity('visualInfo')
 export class VisualInfo {
   @PrimaryGeneratedColumn()
   id: number;

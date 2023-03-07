@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VisualInfoModule } from './visualInfo/visualInfo.module';
+import { LoggerModule } from './logger/logger.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -22,8 +22,9 @@ import { VisualInfoModule } from './visualInfo/visualInfo.module';
       inject: [ConfigService],
     }),
     VisualInfoModule,
+    LoggerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}

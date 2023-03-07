@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { VisualInfo } from './visualInfo.entity';
+import { VisualInfo } from './model/visualInfo.entity';
 import { VisualInfoService } from './visualInfo.service';
 import { VisualInfoController } from './visualInfo.controller';
 

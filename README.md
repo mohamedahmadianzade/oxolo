@@ -12,9 +12,25 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is implemented by NestJS as backend and using Postgres as database.
+All configuration variables are stored in .env files ( like Database connection parameters ).
 
-All configuration variables are stored in .env files. so for chainging the value, please refere to this file.
+## Database Architecture
+
+Database name:oxoloDB
+We store and keep all the information about Text Element in the visualInfo table.
+The reason for keeping information is to support Unde/Redo operation for future versions.
+
+visualInfo table structure :
+
+```
+Id: integer auto_increment
+info :{
+timestamp: timestamp, // The time of text changed
+position:string // '1,2' format
+text:string // Content of the text
+}
+```
 
 ## Installation
 
@@ -30,7 +46,7 @@ Before running the app, we need to create a database table by running following 
 npm run migration:update
 ```
 
-Note : There should be a database with name Oxolo in database. the migration process does not include the creation database in this version!
+Note : There should be a database with name oxoloDB in database. the migration process does not include the creation database in this version!
 
 ```bash
 # development
@@ -64,12 +80,14 @@ We used TypeOrm migration library to implement migration in the project. The bas
 npm run migrattion:update
 ```
 
-All migration config is stored in the ormconfig.ts file. The connection information for connecting to database is read from .env file 
-
+All migration config is stored in the ormconfig.ts file. The connection information for connecting to database is read from .env file
 
 As requested in assessment, changing strucrture can be done easily by following below steps:
+
 1- Changing the related entity in \*.entity.ts
+
 2- npm run migrattion:create // it will create the migration
+
 3- npm run migrattion:update // it will update the database
 
 ## Stay in touch
