@@ -22,7 +22,7 @@ Database name:oxoloDB
 We store and keep all the information about Text Element in the visualInfo table.
 The reason for keeping information is to support Unde/Redo operation for future versions.
 
-###visualInfo table structure :
+### visualInfo table structure :
 
 ```
 public."visualInfo"
@@ -40,7 +40,8 @@ info :
   }
 ```
 
-###logger table structure :
+### logger table structure :
+
 All error happeing in project is saved in logger table and can be accessed via logger method
 
 ```
@@ -80,13 +81,15 @@ $ npm install
 
 ## Running the app
 
-Before running the app, we need to create a database table by running following command:
+Before running the app, we need to create a database tables by running following command:
 
 ```bash
 npm run migration:update
 ```
 
-Note : There should be a database with name oxoloDB in database. the migration process does not include the creation database in this version!
+It will create visualInfo and logger tables in database.
+
+Note : There should be a database with name oxoloDB in database. The migration process does not include the creation database in this version!
 
 ```bash
 # development
@@ -114,7 +117,7 @@ $ npm run test:cov
 
 ## Migration
 
-We used TypeOrm migration library to implement migration in the project. The base structure of the database is exist in migration folder so at the first running of the project, we can create the table by running this command.
+We used TypeOrm migration library to implement migration in the project. The base structure of the database is exist in migration folder so at the first running of the project, we can create the tables by running this command.
 
 ```bash
 npm run migrattion:update
@@ -126,9 +129,32 @@ As requested in assessment, changing strucrture can be done easily by following 
 
 1- Changing the related entity in \*.entity.ts
 
-2- npm run migrattion:create // it will create the migration
+2- npm run migrattion:generate // it will create the migration based on changes in the entity files.
 
 3- npm run migrattion:update // it will update the database
+
+### Migration Json structure
+
+The type of info field is json so for adding new fields to the json structure, we can do following steps:
+
+1- npm run migration:create // it will create new migration file in the migration directory.
+
+2- change the up method of new created file. // It explained in next section
+
+3- npm run migration:update // it will update the json structure of all records in visualInfo table
+
+#### Adding new field
+
+To add a new field to json structure of info field, we can use following command:
+
+```bash
+UPDATE public."visualInfo"
+	SET info=jsonb_set(info,'{newfield}','"newValue"')
+```
+
+By set this command in Up method of migration file, newfield will be added to all records with value 'newValue'
+
+Note - you can view the exmaple of adding and removing field in newMigration file in migration directory
 
 ## Stay in touch
 
