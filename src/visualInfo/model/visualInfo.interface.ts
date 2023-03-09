@@ -9,6 +9,6 @@ export interface IVisualInfoOutput {
   timeStamp: string;
 }
 interface IPosition {
-  x: string;
-  y: string;
+  x: number;
+  y: number;
 }

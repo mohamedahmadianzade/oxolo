@@ -37,4 +37,19 @@ export class LoggerService {
       error: log.error,
     }));
   }
+
+  success(message: string, data?: any): any {
+    return {
+      sucess: true,
+      data,
+      message,
+    };
+  }
+  fail(message: string, error?: any): any {
+    this.log(error);
+    return {
+      sucess: false,
+      message,
+    };
+  }
 }

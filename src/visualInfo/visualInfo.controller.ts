@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common/decorators';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common/decorators';
 import { LoggerService } from 'src/logger/logger.service';
 import { InfoDTO } from './model/visualInfo.dto';
 import { VisualInfoService } from './visualInfo.service';
@@ -21,16 +21,9 @@ export class VisualInfoController {
   async saveInfo(@Body() info: InfoDTO) {
     try {
       await this.visualInfoService.saveInfo(info);
-      return {
-        success: true,
-        message: 'information saved successfully',
-      };
+      return this.loggerService.success('information saved successfully');
     } catch (error) {
-      this.loggerService.log(error);
-      return {
-        success: false,
-        message: 'error saving information!',
-      };
+      return this.loggerService.fail('error saving information!', error);
     }
   }
 
@@ -44,16 +37,15 @@ export class VisualInfoController {
   async getCurrentInfo() {
     try {
       const data = await this.visualInfoService.getCurrent();
-      return {
-        message: 'current information of text element',
+      return this.loggerService.success(
+        'current information of text element',
         data,
-      };
+      );
     } catch (error) {
-      this.loggerService.log(error);
-      return {
-        success: false,
-        message: 'error getting current information of text element!',
-      };
+      return this.loggerService.fail(
+        'error getting current information of text element!',
+        error,
+      );
     }
   }
 
@@ -67,16 +59,30 @@ export class VisualInfoController {
   async getAll() {
     try {
       const data = await this.visualInfoService.getAll();
-      return {
-        message: 'History of text element position and other information',
+      return this.loggerService.success(
+        'History of text element position and other information',
         data,
-      };
+      );
     } catch (error) {
-      this.loggerService.log(error);
-      return {
-        success: false,
-        message: 'error getting hisotry of text element information!',
-      };
+      return this.loggerService.fail(
+        'error getting hisotry of text element information!',
+        error,
+      );
+    }
+  }
+  @Delete('all')
+  async deleteAll() {
+    try {
+      const data = await this.visualInfoService.deleteAll();
+      return this.loggerService.success(
+        'All History of text element position and other information are deleted successfully',
+        data,
+      );
+    } catch (error) {
+      this.loggerService.fail(
+        'error deleting hisotry of text element information!',
+        error,
+      );
     }
   }
 }

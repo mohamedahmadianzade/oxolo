@@ -11,7 +11,7 @@ export class VisualInfoService {
   constructor(
     @InjectRepository(VisualInfo)
     private visualInfoRepository: Repository<VisualInfo>,
-  ) {}
+  ) { }
 
   /**
    * Get the last position of the text element
@@ -36,8 +36,23 @@ export class VisualInfoService {
    * @memberof VisualInfoService
    */
   async getAll(): Promise<IVisualInfoOutput[]> {
-    const result = await this.visualInfoRepository.find();
+    const result = await this.visualInfoRepository.find({
+      order: {
+        id: 'desc',
+      },
+    });
     return result.map((item) => this.format(item));
+  }
+
+
+  /**
+   * Delete all history of text elements
+   *
+   * @return {*}  {Promise<void>}
+   * @memberof VisualInfoService
+   */
+  async deleteAll(): Promise<void> {
+    await this.visualInfoRepository.delete({});
   }
 
   /**
@@ -51,10 +66,10 @@ export class VisualInfoService {
     if (!info) return null;
     return {
       text: info.info.text,
-      timeStamp: moment(info.info.timeStamp).format('YYYY-MM-DD HH:mm'),
+      timeStamp: moment(info.info.timeStamp).format('YYYY-MM-DD HH:mm:ss'),
       position: {
-        x: info.info.position.split(',')[0],
-        y: info.info.position.split(',')[1],
+        x: parseInt(info.info.position.split(',')[0]),
+        y: parseInt(info.info.position.split(',')[1]),
       },
     };
   }
