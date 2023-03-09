@@ -3,6 +3,14 @@ import { LoggerService } from 'src/logger/logger.service';
 import { InfoDTO } from './model/visualInfo.dto';
 import { VisualInfoService } from './visualInfo.service';
 
+/**
+ * All information about the text Element like text and position
+ *
+ * in future version we can work with more fields like color,font-family,font-size and etc.
+ *
+ * @export
+ * @class VisualInfoController
+ */
 @Controller('info')
 export class VisualInfoController {
   constructor(
@@ -21,9 +29,11 @@ export class VisualInfoController {
   async saveInfo(@Body() info: InfoDTO) {
     try {
       await this.visualInfoService.saveInfo(info);
-      return this.loggerService.success('information saved successfully');
+      return this.loggerService.success(
+        'Information saved successfully ( text and position )',
+      );
     } catch (error) {
-      return this.loggerService.fail('error saving information!', error);
+      return this.loggerService.fail('Error saving information!', error);
     }
   }
 
@@ -38,12 +48,12 @@ export class VisualInfoController {
     try {
       const data = await this.visualInfoService.getCurrent();
       return this.loggerService.success(
-        'current information of text element',
+        'Current information of text element',
         data,
       );
     } catch (error) {
       return this.loggerService.fail(
-        'error getting current information of text element!',
+        'Error getting current information of text element!',
         error,
       );
     }
@@ -65,7 +75,7 @@ export class VisualInfoController {
       );
     } catch (error) {
       return this.loggerService.fail(
-        'error getting hisotry of text element information!',
+        'Error getting hisotry of text element information!',
         error,
       );
     }
@@ -80,7 +90,7 @@ export class VisualInfoController {
       );
     } catch (error) {
       this.loggerService.fail(
-        'error deleting hisotry of text element information!',
+        'Error deleting hisotry of text element information!',
         error,
       );
     }

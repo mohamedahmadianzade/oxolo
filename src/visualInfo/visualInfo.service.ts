@@ -11,7 +11,7 @@ export class VisualInfoService {
   constructor(
     @InjectRepository(VisualInfo)
     private visualInfoRepository: Repository<VisualInfo>,
-  ) { }
+  ) {}
 
   /**
    * Get the last position of the text element
@@ -43,7 +43,6 @@ export class VisualInfoService {
     });
     return result.map((item) => this.format(item));
   }
-
 
   /**
    * Delete all history of text elements
