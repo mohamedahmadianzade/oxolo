@@ -12,8 +12,13 @@
 
 ## Description
 
-This project is implemented by NestJS as backend and using Postgres as database.
-All configuration variables are stored in .env files ( like Database connection parameters ).
+- Implemented in NestJS
+- Using PostgreSQL as databsae and TypeOrm as Orm
+- Using dotenv module for configuration
+- Using Prettier and eslint for formatting and error checking
+- Using Migration of TypeOrm library for managing migartion process 
+
+
 
 ## Database Architecture
 
@@ -70,6 +75,8 @@ http://host/info GET get the current position of text element
 http://host/info POST save the latest position of text element
 
 http://host/info/all GET Full history of text element
+
+http://host/info/all DELETE  Delete all history of text element
 
 Note : we keep all history of text element to provide features like redo and undo in future versions
 
