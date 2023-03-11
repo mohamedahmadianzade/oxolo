@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "4000:4000"
+    links:
+      - postgres
+    restart: always
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456**
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=oxoloDB
+    volumes:
+      - ./createDb.sql:/docker-entrypoint-initdb.d/createDb.sql

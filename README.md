@@ -163,6 +163,16 @@ By set this command in Up method of migration file, newfield will be added to al
 
 Note - you can view the exmaple of adding and removing field in newMigration file in migration directory
 
+
+### Running in Docker
+For ruuning backend project on docker, which contains node and postgres,
+Please run the following command :
+
+```
+docker build . -t oxoloapp
+docker compose up
+```
+
 ## Stay in touch
 
 - Author - Seyed Mohamed Mahdi AhmadianZadeh
