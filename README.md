@@ -173,6 +173,10 @@ docker build . -t oxoloapp
 docker compose up
 ```
 
+if you want to run the project with docker, please change the name of config variable to postgres in .env file
+
+PGHOST=localhost ==> PGHOST=postgres
+
 ## Stay in touch
 
 - Author - Seyed Mohamed Mahdi AhmadianZadeh
